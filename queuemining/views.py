@@ -1,17 +1,24 @@
 from django.shortcuts import render
-
+import random
 
 from django.http import HttpResponse
 from . import forms
-from. import models
+from.models import Document
 from django.template import loader
 
 
 def importLogs(request):
+    random.seed(10)
     if request.method == 'POST':
         form = forms.DocumentForm(request.POST,request.FILES)
+
         if form.is_valid():
-            form.save()
+            name = form.cleaned_data['document']
+            print(str(name))
+
+            save = form.save()
+            id = save.pk
+            print(id)
             context = {'form' : form}
         else:
             form = forms.DocumentForm()
